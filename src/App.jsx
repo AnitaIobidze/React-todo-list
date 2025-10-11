@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react"
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+  const [value, setValue]=useState("")
+  const [items, setItems]=useState([])
+  const handleSaveItem=()=>{
+    console.log("User wants to save something", value)
+    if(value===""){
+      alert("value must not be empty")
+    }else{
+      setItems([...items,value])
+      setValue("")
+    }
+  }
+  const handleInputChange=(event)=>{
+    setValue(event.target.value)
+  }
+  const handleDelete=(indexToDelete)=>{
+    const filteredItems=items.filter(
+      (item, index)=>index!==indexToDelete)
+    setItems(filteredItems)
+  }
+  return<>
+    <input type="text" 
+    placeholder="Enter text" 
+    value={value} 
+    onChange={handleInputChange}/>
+    <button onClick={handleSaveItem}>Save</button>
+    <ul>
+      {items.map((item, index)=>{
+        return(
+          <li className={index%2===0? "green-text": "red-text"}>{item}<button onClick={()=>handleDelete(index)}>Delete</button></li>
+        )
+      })}
+    </ul>
+  </>
 }
 
 export default App
